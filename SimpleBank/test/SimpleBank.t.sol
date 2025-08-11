@@ -37,4 +37,10 @@ contract SimpleBankTest is Test{
         assertEq(simplebank.balances(user),0.01 ether);
         vm.stopPrank();
      }
+
+     function test_revert_depositzero() public{
+        vm.expectRevert("amount should be more than zero");
+        vm.prank(user);
+        simplebank.deposit{value:0 }();
+     }
 }
