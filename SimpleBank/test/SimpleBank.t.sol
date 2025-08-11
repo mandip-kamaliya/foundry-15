@@ -6,16 +6,27 @@ import {SimpleBank} from "../src/SimpleBank.sol";
 
 
 
-contract SimpleBank is Test{
+contract SimpleBankTest is Test{
     SimpleBank simplebank;
+    address user = makeAddr("user");
      function setUp() public {
         simplebank = new SimpleBank();
      }
 
      function test_deposit() public{
         vm.startPrank(user);
-        simplebank.deposit();
-        asserEq()
+        vm.deal(user,1 ether);
+        simplebank.deposit{value : 0.01 ether}();
+        assertEq(simplebank.getBalance(user),0.01 ether);
+        vm.stopPrank();
+     }
 
+     function test_withdraw() public{
+        vm.startPrank(user);
+        vm.deal(user,1 ether);
+        simplebank.deposit{value : 0.01 ether}();
+        simplebank.withdraw(0.01 ether);
+        assertEq(simplebank.getBalance(user),0);
+        vm.stopPrank();
      }
 }
