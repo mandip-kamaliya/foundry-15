@@ -62,4 +62,19 @@ contract SimpleBankTest is Test{
         vm.prank(user);
         simplebank.withdraw(2 ether);
     }
+
+     function test_withdrawZeroAmount() public {
+    
+        vm.prank(user);
+        vm.deal(user,1 ether);
+        simplebank.deposit{value: 1 ether}();
+        assertEq(simplebank.getBalance(user), 1 ether);
+
+     
+        vm.prank(user);
+        simplebank.withdraw(0);
+
+       
+        assertEq(simplebank.getBalance(user), 1 ether);
+    }
 }
