@@ -77,4 +77,19 @@ contract SimpleBankTest is Test{
        
         assertEq(simplebank.getBalance(user), 1 ether);
     }
+
+     function test_withdrawExactBalance() public {
+        // Arrange
+        vm.prank(user);
+        vm.deal(user,5 ether);
+        simplebank.deposit{value: 5 ether}();
+        assertEq(simplebank.getBalance(user), 5 ether);
+
+        
+        vm.prank(user);
+        simplebank.withdraw(5 ether);
+
+     
+        assertEq(simplebank.getBalance(user), 0);
+    }
 }
