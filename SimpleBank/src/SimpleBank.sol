@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 contract SimpleBank{
 
     //mapings
-    mapping (address => uint) balances;
+    mapping (address => uint) public balances;
 
     //events
     event deposited(uint256 _amount , address _sender);

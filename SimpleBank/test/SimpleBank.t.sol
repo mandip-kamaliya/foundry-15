@@ -29,4 +29,12 @@ contract SimpleBankTest is Test{
         assertEq(simplebank.getBalance(user),0);
         vm.stopPrank();
      }
+
+     function test_amountcheck() public{
+        vm.startPrank(user);
+        vm.deal(user,1 ether);
+        simplebank.deposit{value:0.01 ether}();
+        assertEq(simplebank.balances[user],0.01 ether);
+        vm.stopPrank();
+     }
 }
