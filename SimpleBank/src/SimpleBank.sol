@@ -25,4 +25,8 @@ contract SimpleBank{
         (bool success , ) = msg.sender.call{value : _amount}("");
         require(success,"withdrawal failed");
     }
+
+    function getBalance() public view returns(uint256){
+        return balances[msg.sender];
+    }
 }
