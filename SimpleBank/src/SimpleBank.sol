@@ -14,12 +14,12 @@ contract SimpleBank{
     //functions
     function deposit() public payable{
         require(msg.value>0,"amount should be more than zero");
-       balances[msg.sender] += msg.value ;
+        balances[msg.sender] += msg.value ;
         emit deposited(msg.value , msg.sender);
     }
 
     function withdraw(uint256 _amount) public {
-        require(balances[msg.sender] >= _amount , "user dont have enough funds to withdrw!!");
+        require(balances[msg.sender] >= _amount , "user dont have enough funds to withdraw!!");
         balances[msg.sender] -= _amount ;
         emit Withdrawal(_amount , msg.sender);
         (bool success , ) = msg.sender.call{value : _amount}("");

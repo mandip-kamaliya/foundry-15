@@ -43,4 +43,10 @@ contract SimpleBankTest is Test{
         vm.prank(user);
         simplebank.deposit{value:0 }();
      }
+
+     function test_revert_withdrawWithoutDeposit() public{
+        vm.expectRevert("user dont have enough funds to withdraw!!");
+        vm.prank(user);
+        simplebank.withdraw(0.01 ether);
+     }
 }
