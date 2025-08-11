@@ -9,6 +9,7 @@ import {SimpleBank} from "../src/SimpleBank.sol";
 contract SimpleBankTest is Test{
     SimpleBank simplebank;
     address user = makeAddr("user");
+    address adam = makeAddr("adam");
      function setUp() public {
         simplebank = new SimpleBank();
      }
@@ -49,4 +50,16 @@ contract SimpleBankTest is Test{
         vm.prank(user);
         simplebank.withdraw(0.01 ether);
      }
+
+     function test_revert_withdrawMoreThanBalance() public {
+        // Arrange: User deposits 1 ETH
+        vm.prank(user);
+        vm.deal(user,1 ether);
+        simplebank.deposit{value: 1 ether}();
+
+        // Act & Assert: User tries to withdraw 2 ETH
+        vm.expectRevert("user dont have enough funds to withdraw!!");
+        vm.prank(user);
+        simplebank.withdraw(2 ether);
+    }
 }
