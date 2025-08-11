@@ -34,7 +34,7 @@ contract SimpleBankTest is Test{
         vm.startPrank(user);
         vm.deal(user,1 ether);
         simplebank.deposit{value:0.01 ether}();
-        assertEq(simplebank.balances[user],0.01 ether);
+        assertEq(simplebank.balances(user),0.01 ether);
         vm.stopPrank();
      }
 }
