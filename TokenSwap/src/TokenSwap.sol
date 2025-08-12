@@ -24,4 +24,10 @@ contract TokenSwap{
           tokenB.transferFrom(address(this),msg.sender,_amount);
             emit TokenSwapped(msg.sender , _amount);
     }
+
+    function addLiquidity(uint256 _amount) public{
+        require(_amount > 0, "amount should be more than zero");
+        tokenB.transferFrom(msg.sender , address(this), _amount);
+        emit AddLiquidity(_amount,tokenB);
+    }
 }
