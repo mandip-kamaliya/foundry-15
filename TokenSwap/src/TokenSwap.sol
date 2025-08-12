@@ -16,9 +16,12 @@ contract TokenSwap{
         tokenA = IERC20(_tokenA);
         tokenB = IERC20(_tokenB);
     }
-    function swap(address _tokenA ,uint256 _amount , address _tokenB) public{
-            IERC20(_tokenA).transfer(address(this),_amount);
-            IERC20(_tokenB).transferFrom(address(this),msg.sender,_amount);
+    function swap(uint256 _amount ) public{
+        require(_amount>0,"amount should be more than zero");
+        require(tokenB.balanceOf(address(this)>0,"not enough tokenB to swap"));
+            tokenA.transferFrom(msg.sender,address(this),_amount);
+            
+          tokenB.transferFrom(address(this),msg.sender,_amount);
             emit TokenSwapped(msg.sender , _amount);
     }
 }
