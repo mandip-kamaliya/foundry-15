@@ -7,8 +7,8 @@ contract TokenSwap{
    
     //events
     event TokenSwapped(address _sender , uint256 _amount);
-    event AddLiquidity(uint256 _amount , address _token);
-    event RemoveLiquidity(uint267 _amount , address _token);
+    event AddLiquidity(uint256 _amount );
+    event RemoveLiquidity(uint267 _amount );
     //constructor
     constructor(address _tokenA , address _tokenB) IERC20{
         require(_tokenA != _tokenB,"can not swap same tokens");
@@ -28,6 +28,12 @@ contract TokenSwap{
     function addLiquidity(uint256 _amount) public{
         require(_amount > 0, "amount should be more than zero");
         tokenB.transferFrom(msg.sender , address(this), _amount);
-        emit AddLiquidity(_amount,tokenB);
+        emit AddLiquidity(_amount);
     }
+
+    function removeLiquidity(uint256 _amount) public{
+        require(_amount <= tokenB.balanceOf(address(this)),"amount is exceeding current liquidity");
+        tokenB.transfer(msg.sender,_amount);
+        emit RemoveLiquidity(_amount );
+    } 
 }
