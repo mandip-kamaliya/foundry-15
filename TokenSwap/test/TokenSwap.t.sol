@@ -44,6 +44,19 @@ contract TokenSwapTest is Test{
         assertEq(tokenB.balanceOf(owner),0);
     }
 
+    function test_removeLiquidity(uint256 _amount) public{
+         uint256 Liquidity = 1000 ether ;
+         vm.assume(_amount > 0 && _amount<=Liquidity);        
+        tokenB.mint(owner,Liquidity);
+        vm.prank(owner);
+        tokenB.approve(address(SwapContract),Liquidity);
+        vm.prank(owner);
+        SwapContract.addLiquidity(Liquidity);
+        vm.prank(owner);
+        SwapContract.removeLiquidity(_amount);
+        assertEq(tokenB.balanceOf(owner),Liquidity - tokenB.balanceOf(address(SwapContract)));
+    }
+
     function testFuzz_Swap_Successfull(uint256 _amount) public{
         uint256 Liquidity = 1000 ether ;
         vm.assume(_amount > 0 && _amount<=Liquidity);
