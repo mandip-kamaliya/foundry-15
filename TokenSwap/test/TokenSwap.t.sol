@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 import "forge-std/Test.sol";
 import {TokenSwap} from "../src/TokenSwap.sol";
-import "@openzeppelin/contracts/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract mokeERC20 is ERC20{
 
@@ -14,7 +14,7 @@ contract mokeERC20 is ERC20{
 contract TokenSwapTest is Test{
     mokeERC20 public tokenA;
     mokeERC20 public tokenB;
-    TokenSwap public smartcontact ;
+    TokenSwap public smartcontract ;
     address public owner = makeAddr("owner");
     address public user = makeAddr("user");
 
@@ -22,6 +22,12 @@ contract TokenSwapTest is Test{
        tokenA = new mokeERC20("TOKEN A","TKA");
        tokenB = new mokeERC20("TOKEN B","TKB");
        vm.prank(owner);
-       smartcontact = new TokenSwap(address(tokenA) , address(tokenB));
+       smartcontract = new TokenSwap(address(tokenA) , address(tokenB));
+    }
+
+    function test_InitialState() public{
+        assertEq(smartcontract.owner(),owner);
+        assertEq(smartcontract.tokenA(),tokenA);
+        assertEq(smartcontract.tokenB(),tokenB);
     }
 }
