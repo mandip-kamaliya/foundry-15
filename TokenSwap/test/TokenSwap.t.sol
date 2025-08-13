@@ -14,7 +14,7 @@ contract mokeERC20 is ERC20{
 contract TokenSwapTest is Test{
     mokeERC20 public tokenA;
     mokeERC20 public tokenB;
-    TokenSwap public smartcontract ;
+    TokenSwap public SwapContract ;
     address public owner = makeAddr("owner");
     address public user = makeAddr("user");
 
@@ -22,12 +22,13 @@ contract TokenSwapTest is Test{
        tokenA = new mokeERC20("TOKEN A","TKA");
        tokenB = new mokeERC20("TOKEN B","TKB");
        vm.prank(owner);
-       smartcontract = new TokenSwap(address(tokenA) , address(tokenB));
+       SwapContract = new TokenSwap(address(tokenA) , address(tokenB));
     }
 
     function test_InitialState() public{
-        assertEq(smartcontract.owner(),owner);
-        assertEq(address(smartcontract.tokenA()),address(tokenA));
-        assertEq(address(smartcontract.tokenB()),address(tokenB));
+        assertEq(SwapContract.owner(),owner);
+        assertEq(address(SwapContract.tokenA()),address(tokenA));
+        assertEq(address(SwapContract.tokenB()),address(tokenB));
     }
+
 }
