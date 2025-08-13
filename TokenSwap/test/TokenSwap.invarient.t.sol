@@ -8,7 +8,7 @@ import "../src/TokenSwap.sol";
  * @title MockERC20
  * @notice A self-contained mock ERC20 contract for testing.
  * @dev This version is written from scratch to avoid dependency conflicts
- * with different IERC20 interfaces from OpenZeppelin and forge-std.
+ * and includes robust checks in its functions.
  */
 contract MockERC20 {
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -40,15 +40,23 @@ contract MockERC20 {
     }
 
     function transfer(address to, uint256 amount) public returns (bool) {
-        balanceOf[msg.sender] -= amount;
+        uint256 fromBalance = balanceOf[msg.sender];
+        require(fromBalance >= amount, "MockERC20: transfer amount exceeds balance");
+        balanceOf[msg.sender] = fromBalance - amount;
         balanceOf[to] += amount;
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public returns (bool) {
-        allowance[from][msg.sender] -= amount;
-        balanceOf[from] -= amount;
+        uint256 currentAllowance = allowance[from][msg.sender];
+        require(currentAllowance >= amount, "MockERC20: insufficient allowance");
+        allowance[from][msg.sender] = currentAllowance - amount;
+
+        uint256 fromBalance = balanceOf[from];
+        require(fromBalance >= amount, "MockERC20: transfer amount exceeds balance");
+        balanceOf[from] = fromBalance - amount;
+        
         balanceOf[to] += amount;
         emit Transfer(from, to, amount);
         return true;
