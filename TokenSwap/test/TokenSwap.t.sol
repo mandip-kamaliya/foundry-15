@@ -17,6 +17,7 @@ contract TokenSwapTest is Test{
     TokenSwap public SwapContract ;
     address public owner = makeAddr("owner");
     address public user = makeAddr("user");
+    
 
     function setUp() public{
        tokenA = new mokeERC20("TOKEN A","TKA");
@@ -78,5 +79,18 @@ contract TokenSwapTest is Test{
         vm.expectRevert("Insufficient liquidity");
         vm.prank(user);
         SwapContract.swap(_amount);
+    }
+
+    contract Handler is Test {
+        mokeERC20 public tokenA;
+        mokeERC20 public tokenB;
+        TokenSwap public SwapContract;
+
+        uint256 public initialLiquidity = 1000000 ether;
+
+        constructor(TokenSwap _swapcontract,mokeERC20 _tokenA , mokeERC20 _tokenB ){
+            
+        }
+
     }
 }
