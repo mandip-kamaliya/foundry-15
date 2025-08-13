@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.20;
 import "forge-std/interfaces/IERC20.sol";
-contract TokenSwap{
+import "@openzeppelin/contracts/access/Ownable.sol";
+contract TokenSwap is Ownable{
     IERC20 public immutable tokenA ;
     IERC20 public immutable tokenB ;
    
@@ -10,7 +11,7 @@ contract TokenSwap{
     event AddLiquidity(uint256 _amount );
     event RemoveLiquidity(uint256 _amount );
     //constructor
-    constructor(address _tokenA , address _tokenB) IERC20{
+    constructor(address _tokenA , address _tokenB) {
         require(_tokenA != _tokenB,"can not swap same tokens");
         require(_tokenA != address(0) && _tokenB != address(0),"Invalid tokens");
         tokenA = IERC20(_tokenA);
@@ -18,7 +19,7 @@ contract TokenSwap{
     }
     function swap(uint256 _amount ) public{
         require(_amount>0,"amount should be more than zero");
-        require(tokenB.balanceOf(address(this)>0,"not enough tokenB to swap"));
+        require(tokenB.balanceOf(address(this))>0,"not enough tokenB to swap");
             tokenA.transferFrom(msg.sender,address(this),_amount);
             
           tokenB.transferFrom(address(this),msg.sender,_amount);

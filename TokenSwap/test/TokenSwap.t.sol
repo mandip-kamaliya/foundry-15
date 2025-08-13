@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract mokeERC20 is ERC20{
 
-    constructor(string memory _name , string memory _symbol) ERC20(name,symbol){}
+    constructor(string memory _name , string memory _symbol) ERC20("name","symbol"){}
     function mint(address _to , uint256 _amount) public {
         _mint(_to , _amount);
     }
@@ -27,7 +27,7 @@ contract TokenSwapTest is Test{
 
     function test_InitialState() public{
         assertEq(smartcontract.owner(),owner);
-        assertEq(smartcontract.tokenA(),tokenA);
-        assertEq(smartcontract.tokenB(),tokenB);
+        assertEq(address(smartcontract.tokenA()),address(tokenA));
+        assertEq(address(smartcontract.tokenB()),address(tokenB));
     }
 }
