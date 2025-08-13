@@ -61,4 +61,22 @@ contract TokenSwapTest is Test{
         assertEq(tokenA.balanceOf(address(SwapContract)),_amount);
         assertEq(tokenB.balanceOf(address(SwapContract)),Liquidity - _amount);
     }
+
+    function testFuzz_Swap_RevertIfInsufficientLiquidity(uint256 _liquidity , uint256 _amount) public{
+        vm.assume(_amount > _liquidity);
+        vm.assume(_liquidity >0);
+         tokenB.mint(owner,_liquidity);
+        vm.prank(owner);
+        tokenB.approve(address(SwapContract),_liquidity);
+        vm.prank(owner);
+        SwapContract.addLiquidity(_liquidity);
+        assertEq(tokenB.balanceOf(address(SwapContract)),_liquidity);
+
+        tokenA.mint(user,_amount);
+        vm.prank(user);
+        tokenA.approve(address(SwapContract),_amount);
+        vm.expectRevert("Insufficient liquidity");
+        vm.prank(user);
+        SwapContract.swap(_amount);
+    }
 }

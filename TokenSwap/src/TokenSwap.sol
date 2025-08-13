@@ -19,7 +19,8 @@ contract TokenSwap is Ownable{
     }
     function swap(uint256 _amount ) public{
         require(_amount>0,"amount should be more than zero");
-        require(tokenB.balanceOf(address(this))>0,"not enough tokenB to swap");
+        
+        require(_amount <= tokenB.balanceOf(address(this)),"Insufficient liquidity");
             tokenA.transferFrom(msg.sender,address(this),_amount);
             
           tokenB.transfer(msg.sender,_amount);
