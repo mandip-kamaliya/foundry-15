@@ -30,7 +30,7 @@ contract TokenSwapTest is Test{
         assertEq(address(SwapContract.tokenA()),address(tokenA));
         assertEq(address(SwapContract.tokenB()),address(tokenB));
     }
-    function  test_addLiquidity(uint256 _amount) public{
+    function  test_addLiquidity() public{
         uint256 Liquidity = 1000 ether ;
         
         tokenB.mint(owner,Liquidity);
@@ -39,5 +39,26 @@ contract TokenSwapTest is Test{
         vm.prank(owner);
         SwapContract.addLiquidity(Liquidity);
         assertEq(tokenB.balanceOf(owner),0);
+    }
+
+    function testFuzz_Swap_Successfull(uint256 _amount) public{
+        uint256 Liquidity = 1000 ether ;
+        vm.assume(_amount > 0 && _amount<=Liquidity);
+        tokenB.mint(owner,Liquidity);
+        vm.prank(owner);
+        tokenB.approve(address(SwapContract),Liquidity);
+        vm.prank(owner);
+        SwapContract.addLiquidity(Liquidity);
+        assertEq(tokenB.balanceOf(address(SwapContract)),Liquidity);
+
+        tokenA.mint(user,_amount);
+        vm.prank(user);
+        tokenA.approve(address(SwapContract),_amount);
+        vm.prank(user);
+        SwapContract.swap(_amount);
+        assertEq(tokenA.balanceOf(user),0);
+        assertEq(tokenB.balanceOf(user),_amount);
+        assertEq(tokenA.balanceOf(address(SwapContract)),_amount);
+        assertEq(tokenB.balanceOf(address(SwapContract)),Liquidity - _amount);
     }
 }

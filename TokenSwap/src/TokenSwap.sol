@@ -22,7 +22,7 @@ contract TokenSwap is Ownable{
         require(tokenB.balanceOf(address(this))>0,"not enough tokenB to swap");
             tokenA.transferFrom(msg.sender,address(this),_amount);
             
-          tokenB.transferFrom(address(this),msg.sender,_amount);
+          tokenB.transfer(msg.sender,_amount);
             emit TokenSwapped(msg.sender , _amount);
     }
 
