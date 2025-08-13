@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract mokeERC20 is ERC20{
 
-    constructor(string memory _name , string memory _symbol) ERC20("name","symbol"){}
+    constructor(string memory _name , string memory _symbol) ERC20("_name","_symbol"){}
     function mint(address _to , uint256 _amount) public {
         _mint(_to , _amount);
     }
@@ -17,13 +17,15 @@ contract TokenSwapTest is Test{
     TokenSwap public SwapContract ;
     address public owner = makeAddr("owner");
     address public user = makeAddr("user");
-    
+   
 
     function setUp() public{
        tokenA = new mokeERC20("TOKEN A","TKA");
        tokenB = new mokeERC20("TOKEN B","TKB");
+      
        vm.prank(owner);
        SwapContract = new TokenSwap(address(tokenA) , address(tokenB));
+       
     }
 
     function test_InitialState() public{
@@ -81,16 +83,7 @@ contract TokenSwapTest is Test{
         SwapContract.swap(_amount);
     }
 
-    contract Handler is Test {
-        mokeERC20 public tokenA;
-        mokeERC20 public tokenB;
-        TokenSwap public SwapContract;
-
-        uint256 public initialLiquidity = 1000000 ether;
-
-        constructor(TokenSwap _swapcontract,mokeERC20 _tokenA , mokeERC20 _tokenB ){
-            
-        }
-
+    
     }
-}
+
+   
