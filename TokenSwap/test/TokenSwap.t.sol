@@ -30,5 +30,14 @@ contract TokenSwapTest is Test{
         assertEq(address(SwapContract.tokenA()),address(tokenA));
         assertEq(address(SwapContract.tokenB()),address(tokenB));
     }
-
+    function  test_addLiquidity(uint256 _amount) public{
+        uint256 Liquidity = 1000 ether ;
+        
+        tokenB.mint(owner,Liquidity);
+        vm.prank(owner);
+        tokenB.approve(address(SwapContract),Liquidity);
+        vm.prank(owner);
+        SwapContract.addLiquidity(Liquidity);
+        assertEq(tokenB.balanceOf(owner),0);
+    }
 }
