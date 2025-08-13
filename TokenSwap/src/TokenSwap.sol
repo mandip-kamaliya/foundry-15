@@ -11,7 +11,7 @@ contract TokenSwap is Ownable{
     event AddLiquidity(uint256 _amount );
     event RemoveLiquidity(uint256 _amount );
     //constructor
-    constructor(address _tokenA , address _tokenB) {
+    constructor(address _tokenA , address _tokenB) Ownable(msg.sender){
         require(_tokenA != _tokenB,"can not swap same tokens");
         require(_tokenA != address(0) && _tokenB != address(0),"Invalid tokens");
         tokenA = IERC20(_tokenA);
