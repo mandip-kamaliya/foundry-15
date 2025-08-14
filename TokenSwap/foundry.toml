@@ -5,4 +5,6 @@ libs = ["lib"]
 remappings = [
     "@openzeppelin/=lib/openzeppelin-contracts/"
 ]
+gas_reports = ["*"]
+gas_reports_ignore = []
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
