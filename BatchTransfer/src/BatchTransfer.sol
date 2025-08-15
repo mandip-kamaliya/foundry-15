@@ -10,7 +10,8 @@ contract BatchTransfer{
         uint256 amountperrecipient = msg.value / recipientlength ;
 
         for(uint256 i = 0 ; i < recipientlength ; i++){
-           _recipients[i].transfer(amountperrecipient);
+            (bool sent ,) = _recipients[i].call{value : amountperrecipient}("");
+            require(sent,"transfer failed");
         }
     }
 }
