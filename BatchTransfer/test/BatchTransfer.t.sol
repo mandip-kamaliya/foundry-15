@@ -11,7 +11,17 @@ contract BatchTransferTest is Test{
     }
 
     function test_disburse() public {
-        
+        uint256 count = 10 ; 
+
+        address payable[] memory recipients = new address payable[](count);
+
+        for (uint256 i =0 ; i < count ; i++){
+            recipients[i] = payable(address(uint160(i+1)));
+        }
+        uint256 amount = 10 ether ;
+        batchtransfer.disburse{value :amount }(recipients);
+        assertTrue(address(batchtransfer).balance < count);
+
     }
 
 }
