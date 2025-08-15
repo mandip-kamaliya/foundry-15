@@ -16,7 +16,7 @@ contract BatchTransferTest is Test{
         address payable[] memory recipients = new address payable[](count);
 
         for (uint256 i =0 ; i < count ; i++){
-            recipients[i] = payable(address(uint160(i+1)));
+            recipients[i] = payable(address(uint160(i+1000)));
         }
         uint256 amount = 10 ether ;
         batchtransfer.disburse{value :amount }(recipients);
