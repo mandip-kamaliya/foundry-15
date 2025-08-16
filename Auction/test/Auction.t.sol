@@ -6,9 +6,11 @@ import {Auction} from "../src/Auction.sol";
 contract AuctionTest is Test{
     Auction public auction;
     address user = makeAddr("user");
+    uint256 startingtime;
 
     function setUp() public{
-        auction = new Auction(200000);
+        startingtime = block.timestamp ; 
+        auction = new Auction(1 hours);
         vm.deal(user , 5 ether);
     }
 
@@ -16,5 +18,15 @@ contract AuctionTest is Test{
         vm.prank(user);
         auction.bid{value : 1 ether }();
         assertEq(address(auction).balance , 1 ether);
+    }
+
+    function test_timeleft() public{
+        assertEq(auction.timeleft(),1 hours );
+
+        vm.warp(startingtime + 1 hours);
+        assertEq(auction.timeleft(),0);
+
+        vm.warp(startingtime + 30 minutes);
+        assertEq(auction.timeleft(),30 minutes);
     }
 }
