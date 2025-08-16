@@ -26,7 +26,13 @@ contract Auction {
     }
 
     function timeleft() public returns(uint256){
-        
         return (auctionendtime - block.timestamp) ;
+    }
+
+    function endauction() public{
+        require(block.timestamp >= auctionendtime , "auction is active");
+        require(!ended,"auction is already ended");
+        ended = true ;
+        emit WinnerAnounce(highestbidder,highestbid);
     }
 }
