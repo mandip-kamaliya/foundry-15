@@ -13,9 +13,13 @@ contract Auction {
         auctionendtime = block.timestamp + duration ;
     }
 
+    //events
+    event bidPlaced(address indexed bidder , uint256 _amount);
+    event WinnerAnounce(address indexed Winner , uint256 _amount);
+    
     function bid() public payable{
-        require(msg.value > highestbid , "bid is not acceptable");
+        require(msg.value > highestbid , "bid is low");
         highestbid = msg.value;
-
+        highestbidder = msg.sender;
     }
 }
