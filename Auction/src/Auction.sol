@@ -26,6 +26,7 @@ contract Auction {
     }
 
     function timeleft() public returns(uint256){
+        if(block.timestamp >= auctionendtime) return 0;
         return (auctionendtime - block.timestamp) ;
     }
 
