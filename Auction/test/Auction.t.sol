@@ -29,4 +29,11 @@ contract AuctionTest is Test{
         vm.warp(startingtime + 30 minutes);
         assertEq(auction.timeleft(),30 minutes);
     }
+
+    function test_endauction() public{
+        vm.warp(startingtime + 1 hours);
+        vm.expectEmit(true,true,true,true);
+        
+        auction.endauction();
+    }
 }
