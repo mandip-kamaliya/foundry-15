@@ -6,7 +6,7 @@ contract voting {
         string  name;
         uint256 VotedCount;
     }
-    
+    proposol[] public proposols;
     string memory proposol ;
     uint256 immutable public fees = 0.01 ether ;
     mapping (uint256 => string ) public indexTOproposol;
