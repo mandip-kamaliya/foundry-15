@@ -16,10 +16,11 @@ contract voting {
         proposols.push(proposol({name:_name , VoteCount:0}));
     }
 
-    function vote(uint256 _fees) public payable{
-        (bool sent,) = address(this).call{value:_fees}();
-        require("sent","transation failed");
-        
-        emit voted(msg.sender);
-    }
+  function vote(uint256 memory ProposolIndex) public{
+    require(!hasVoted[msg.sender],"user is already voted!!!");
+    require(ProposolIndex <= proposols.length,"proposol dont exists!!");
+    proposols[ProposolIndex].VoteCount++;
+    hasVoted[msg.sender]=true;
+    emit voted(msg.sender);
+  }
 }
