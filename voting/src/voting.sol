@@ -23,4 +23,18 @@ contract voting {
     hasVoted[msg.sender]=true;
     emit voted(msg.sender);
   }
+
+  function Winner() public{
+    uint256 proposolIndex = 0;
+    uint256 votes = 0;
+
+    for(let i;i <= proposols.length ; i++){
+        if(proposols[i].VoteCount > votes){
+            votes = proposols[proposolIndex];
+            proposolIndex = i;
+        }
+
+    }
+    return proposols[proposolIndex].name;
+  }
 }
