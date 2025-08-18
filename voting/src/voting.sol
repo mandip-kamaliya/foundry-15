@@ -2,6 +2,11 @@
 pragma solidity ^0.8.20;
 
 contract voting {
+    struct proposol {
+        string  name;
+        uint256 VotedCount;
+    }
+    
     string memory proposol ;
     uint256 immutable public fees = 0.01 ether ;
     mapping (uint256 => string ) public indexTOproposol;
