@@ -5,11 +5,11 @@ import {NFT} from "../src/NFT.sol";
 import {Script} from "forge-std/Script.sol";
 
 contract DeployNft is Script {
-    Nft nft;
+    NFT nft;
 
     function run() public{
         vm.startBroadcast();
-        nft = new NFT();
+        nft = new NFT(msg.sender);
         vm.stopBroadcast();
     }
 }
