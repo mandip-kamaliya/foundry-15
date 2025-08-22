@@ -11,7 +11,7 @@ contract SimpleBank {
 
     //functions
     function deposit() public payable {
-        require(msg.value > 0, "amount should be more than zero");
+         require(msg.value > 0, "amount should be more than zero");
         balances[msg.sender] += msg.value;
         emit deposited(msg.value, msg.sender);
     }
