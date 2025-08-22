@@ -18,7 +18,7 @@ contract SimpleBank{
         emit deposited(msg.value , msg.sender);
     }
 
-    function withdraw(uint256 _amount) public {
+      function withdraw(uint256 _amount) public {
         require(balances[msg.sender] >= _amount , "user dont have enough funds to withdraw!!");
         balances[msg.sender] -= _amount ;
         emit Withdrawal(_amount , msg.sender);
