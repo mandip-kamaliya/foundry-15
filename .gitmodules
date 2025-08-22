@@ -40,3 +40,6 @@
 [submodule "Wallet/lib/forge-std"]
 	path = Wallet/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "Vault/lib/forge-std"]
+	path = Vault/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
