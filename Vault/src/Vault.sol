@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/**
- * @title Vault
- * @author Rajkot, Gujarat
- * @notice A simple vault for depositing and withdrawing ETH with security features.
- */
+
 contract Vault {
     // --- Errors ---
     error NotOwner();
