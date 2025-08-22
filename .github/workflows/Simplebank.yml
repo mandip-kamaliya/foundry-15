@@ -1,0 +1,33 @@
+name: CI for Project 1
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'SimpleBank/**' # Only run when files in project1 change
+  pull_request:
+    paths:
+      - 'SimpleBank/**' # Only run for PRs affecting project1
+
+jobs:
+  check:
+    name: Foundry project 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      # Note: Use working-directory to run commands inside your project folder
+      - name: Run Forge fmt
+        working-directory: ./project1 
+        run: forge fmt --check
+
+      - name: Run Forge build
+        working-directory: ./project1
+        run: forge build
+
+      - name: Run Forge tests
+        working-directory: ./project1
+        run: forge test -vvv
