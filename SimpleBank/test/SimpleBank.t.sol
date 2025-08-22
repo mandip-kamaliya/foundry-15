@@ -8,7 +8,7 @@ import {SimpleBank} from "../src/SimpleBank.sol";
 
 contract SimpleBankTest is Test{
     SimpleBank simplebank;
-     address user = makeAddr("user");
+    address user = makeAddr("user");
     address adam = makeAddr("adam");
      function setUp() public {
         simplebank = new SimpleBank();
