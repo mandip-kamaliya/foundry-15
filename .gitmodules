@@ -43,3 +43,6 @@
 [submodule "Vault/lib/forge-std"]
 	path = Vault/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "Subscription/lib/forge-std"]
+	path = Subscription/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
