@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import "forge-std/Test.sol";
 import "../src/Subscription.sol";
 import "./mocks/MockERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SubscriptionTest is Test {
     Subscription public subscriptionContract;
@@ -24,18 +25,19 @@ contract SubscriptionTest is Test {
         token.mint(user, 1000 * 1e18);
     }
 
-    function test_SubscribeSuccessfully() public {
-        vm.startPrank(user);
-        // User must approve the contract to spend tokens on their behalf
-        token.approve(address(subscriptionContract), INITIAL_FEE);
-        subscriptionContract.subscribe();
-        vm.stopPrank();
+  function test_SubscribeSuccessfully() public {
+    vm.startPrank(user);
+    token.approve(address(subscriptionContract), INITIAL_FEE);
+    subscriptionContract.subscribe();
+    vm.stopPrank();
 
-        Subscription.Subscriber memory sub = subscriptionContract.subscribers(user);
-        assertTrue(sub.isActive, "User should be active");
-        assertEq(sub.nextPaymentDue, block.timestamp + 30 days, "Next payment date is wrong");
-        assertEq(token.balanceOf(address(subscriptionContract)), INITIAL_FEE, "Contract balance is wrong");
-    }
+    // Corrected part: Destructure the returned values
+    (bool isActive, uint256 nextPaymentDue) = subscriptionContract.subscribers(user);
+
+    assertTrue(isActive, "User should be active");
+    assertEq(nextPaymentDue, block.timestamp + 30 days, "Next payment date is wrong");
+    assertEq(token.balanceOf(address(subscriptionContract)), INITIAL_FEE, "Contract balance is wrong");
+}
 
     function test_Fail_SubscribeWithInsufficientAllowance() public {
         vm.startPrank(user);
@@ -45,21 +47,23 @@ contract SubscriptionTest is Test {
         vm.stopPrank();
     }
 
-    function test_Unsubscribe() public {
-        // First, subscribe the user
-        vm.startPrank(user);
-        token.approve(address(subscriptionContract), INITIAL_FEE);
-        subscriptionContract.subscribe();
-        vm.stopPrank();
+   function test_Unsubscribe() public {
+    // First, subscribe the user
+    vm.startPrank(user);
+    token.approve(address(subscriptionContract), INITIAL_FEE);
+    subscriptionContract.subscribe();
+    vm.stopPrank();
 
-        // Now, unsubscribe
-        vm.startPrank(user);
-        subscriptionContract.unsubscribe();
-        vm.stopPrank();
+    // Now, unsubscribe
+    vm.startPrank(user);
+    subscriptionContract.unsubscribe();
+    vm.stopPrank();
 
-        Subscription.Subscriber memory sub = subscriptionContract.subscribers(user);
-        assertFalse(sub.isActive, "User should be inactive after unsubscribing");
-    }
+    // Corrected part: Destructure the returned values
+    (bool isActive, ) = subscriptionContract.subscribers(user); // We only need isActive here
+
+    assertFalse(isActive, "User should be inactive after unsubscribing");
+}
 
     function test_OwnerCanWithdraw() public {
         // User subscribes and pays
@@ -79,9 +83,10 @@ contract SubscriptionTest is Test {
         assertEq(token.balanceOf(owner), contractBalance, "Owner did not receive the funds");
     }
 
-    function test_Fail_NonOwnerCannotWithdraw() public {
-        vm.prank(user);
-        vm.expectRevert("Ownable: caller is not the owner");
-        subscriptionContract.withdraw();
-    }
+   function test_Fail_NonOwnerCannotWithdraw() public {
+    vm.prank(user);
+    // This correctly expects the modern custom error with the user's address
+    vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
+    subscriptionContract.withdraw();
+}
 }
