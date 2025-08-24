@@ -23,6 +23,7 @@ contract crowdfund{
 
     event Funded(address indexed _sender,uint256 _amount);
     event AddCampaign(string _name , uint256 indexed _id);
+    event RefundedCampaign(address _sender , uint256 _id , uint256 _refundValue);
 
     function fundCampaign(uint256 _id) public payable{
         if(msg.value>0){
@@ -46,7 +47,7 @@ contract crowdfund{
         emit AddCampaign(_name , newId); 
         return newId;    
     }
-    function removeFundfromCampaign(uint256 _id) public{
+    function refundCampaign(uint256 _id) public{
         if(CampaignById[_id].owner == address(0)){
             revert _CampaignNotFound();
         }
@@ -58,9 +59,10 @@ contract crowdfund{
         if(!success){
             revert _TransactionFailed();
         }
+        emit RefundedCampaign(msg.sender,_id,refundedAmount);
     }
-    function withdraw() public{
-
+    function withdraw(uint256 _id) private{
+        (bool success) = CampaignById[_id].owner.call{value:}
  }
 
 }
