@@ -12,6 +12,8 @@ contract crowdfund{
     error _Notfunded();
     error _CampaignNotFound();
     error _TransactionFailed();
+    error _MoreThanZero();
+    error _IdIsNotValid();
 
     Campaign[] public campaigns;
     uint256 public nextCampaignId;
@@ -23,8 +25,13 @@ contract crowdfund{
     event AddCampaign(string _name , uint256 indexed _id);
 
     function fundCampaign(uint256 _id) public payable{
-        require(msg.value > 0 , "value should be more than zero!!");
-        userfunded[msg.sender]+=msg.value;
+        if(msg.value>0){
+            revert _MoreThanZero();
+        }
+        if(CampaignById[_id].owner == address(0)){
+            revert _IdIsNotValid();
+        }
+        contributions[_id][msg.sender]+=msg.value;
         emit Funded(msg.sender,msg.value);
     }
 
@@ -52,6 +59,8 @@ contract crowdfund{
             revert _TransactionFailed();
         }
     }
+    function withdraw() public{
 
+ }
 
 }
