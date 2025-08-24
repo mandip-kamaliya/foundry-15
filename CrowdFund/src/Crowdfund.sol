@@ -8,6 +8,7 @@ contract crowdfund{
         uint256 id;
     }
     Campaign[] public campaigns;
+    uint256 public nextCampignId;
     mapping (address=>Campaign) public userTocampaign;
     mapping (address=>uint256) public userfunded;
 
@@ -18,7 +19,17 @@ contract crowdfund{
         userfunded[msg.sender]+=msg.value;
         emit Funded(msg.sender,msg.value);
     }
-    
+
+    function addCampaign(string memory _name ) public returns(uint256){
+        uint256 newId = nextCampignId;
+        campaigns.push(Campaign({
+            name:_name,
+            id:newId
+        }));
+    nextCampignId++; 
+
+    return newId;   
+    }
 
 
 
