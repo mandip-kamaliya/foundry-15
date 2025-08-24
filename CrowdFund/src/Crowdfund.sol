@@ -8,11 +8,12 @@ contract crowdfund{
         uint256 id;
     }
     Campaign[] public campaigns;
-    uint256 public nextCampignId;
+    uint256 public nextCampaignId;
     mapping (address=>Campaign) public userTocampaign;
     mapping (address=>uint256) public userfunded;
 
     event Funded(address indexed _sender,uint256 _amount);
+    event AddCampaign(string _name , uint256 indexed _id);
 
     function fundCampaign(uint256 _id) public payable{
         require(msg.value > 0 , "value should be more than zero!!");
@@ -21,14 +22,14 @@ contract crowdfund{
     }
 
     function addCampaign(string memory _name ) public returns(uint256){
-        uint256 newId = nextCampignId;
+        uint256 newId = nextCampaignId;
         campaigns.push(Campaign({
             name:_name,
             id:newId
         }));
-    nextCampignId++; 
-
-    return newId;   
+    nextCampaignId++; 
+    emit AddCampaign(_name , newId); 
+    return newId;    
     }
 
 
