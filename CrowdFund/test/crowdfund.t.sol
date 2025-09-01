@@ -8,4 +8,12 @@ contract crowdfundTest is Test{
     function setUp() public{
         Crowdfund = new crowdfund();
     }
+
+    function test_addCampaign() public{
+        uint256 id = Crowdfund.addCampaign("Test Campaign");
+        (address owner, string memory name, uint256 campaignId) = Crowdfund.campaigns(0);
+        assertEq(owner, address(this));
+        assertEq(name, "Test Campaign");
+        assertEq(campaignId, id);
+    }
 }
