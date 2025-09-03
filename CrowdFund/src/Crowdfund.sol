@@ -61,8 +61,15 @@ contract crowdfund{
         }
         emit RefundedCampaign(msg.sender,_id,refundedAmount);
     }
-//     function withdraw(uint256 _id) private{
-//         (bool success) = CampaignById[_id].owner.call{value:}
-//  }
+    function withdraw(uint256 _id) private{
+        uint256 withdrawedAmount = userfunded[msg.sender];
+            userfunded[msg.sender] = 0;
+
+        (bool success,) = CampaignById[_id].owner.call{value:withdrawedAmount}("");
+        if(!success){
+                userfunded[msg.sender] = withdrawedAmount;
+                revert _TransactionFailed();
+        }
+ }
 
 }
