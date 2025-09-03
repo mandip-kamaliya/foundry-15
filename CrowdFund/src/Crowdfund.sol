@@ -32,6 +32,7 @@ contract crowdfund{
        require(_id < campaigns.length, "_IdIsNotValid()");
 
         contributions[_id][msg.sender]+=msg.value;
+        userfunded[msg.sender]=msg.value;
         emit Funded(msg.sender,msg.value);
     }
 
@@ -47,9 +48,7 @@ contract crowdfund{
         return newId;    
     }
     function refundCampaign(uint256 _id) public{
-        if(CampaignById[_id].owner == address(0)){
-            revert _CampaignNotFound();
-        }
+        
         if(userfunded[msg.sender]==0){
             revert _Notfunded();
         }
