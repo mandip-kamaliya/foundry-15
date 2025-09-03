@@ -26,7 +26,7 @@ contract crowdfund{
     event RefundedCampaign(address _sender , uint256 _id , uint256 _refundValue);
 
     function fundCampaign(uint256 _id) public payable{
-        if(msg.value>0){
+        if(msg.value<0){
             revert _MoreThanZero();
         }
         if(CampaignById[_id].owner == address(0)){
