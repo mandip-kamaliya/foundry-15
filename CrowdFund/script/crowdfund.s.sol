@@ -6,7 +6,11 @@ import {crowdfund} from "../src/Crowdfund.sol";
 contract CrowdfundScript is Script{
     crowdfund public crowdFund;
 
-    function setUp() public{
+    
+    function run() public{
+        vm.startBroadcast();
         crowdFund = new crowdfund();
+        vm.stopBroadcast();
+
     }
 }
