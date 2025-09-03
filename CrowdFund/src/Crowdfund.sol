@@ -29,9 +29,8 @@ contract crowdfund{
         if(msg.value<0){
             revert _MoreThanZero();
         }
-        if(CampaignById[_id].owner == address(0)){
-            revert _IdIsNotValid();
-        }
+       require(_id < campaigns.length, "_IdIsNotValid()");
+
         contributions[_id][msg.sender]+=msg.value;
         emit Funded(msg.sender,msg.value);
     }
