@@ -26,4 +26,14 @@ contract crowdfundTest is Test{
         Crowdfund.fundCampaign{value:1 ether}(id);
         assertEq(Crowdfund.contributions(id,user),1 ether);
     }
+
+    function test_refundCampaign() public{
+         uint256 id = Crowdfund.addCampaign("Test Campaign");
+        (address owner, string memory name, uint256 campaignId) = Crowdfund.campaigns(0);
+        vm.deal(user,1 ether);
+        vm.startPrank(user);
+        Crowdfund.fundCampaign{value:1 ether}(id);
+        Crowdfund.refundCampaign(id);
+        assertEq(user.balance,1 ether);
+    }
 }
